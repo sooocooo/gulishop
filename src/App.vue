@@ -1,21 +1,23 @@
 <template>
   <div>
-    <Header />
+    <Hearder />
     <router-view></router-view>
     <Footer v-if="!$route.meta.isHide" />
   </div>
 </template>
 
 <script>
-import Header from "./components/Header";
+
 import Footer from "./components/Footer";
+import Hearder from "./components/Hearder";
 export default {
-  name:"App",
+  name: "App",
   components: {
+    Hearder,
     Footer,
-    Header,
   },
 };
 </script>
 
-<style></style>
+<style lang="less" scoped>
+</style>

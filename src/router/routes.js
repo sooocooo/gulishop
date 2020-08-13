@@ -1,5 +1,5 @@
 import Home from "../pages/Home";
-import Longin from "../pages/Longin";
+import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Search from "../pages/Search";
 
@@ -9,25 +9,28 @@ export default [
     component: Home,
   },
   {
-    path: "/longin",
-    component: Longin,
-    meta: {
-      isHide: true,
-    },
+    path: "/login",
+    component: Login,
+    meta:{
+        isHide:true,
+    }
   },
   {
     path: "/register",
     component: Register,
-    meta: {
-      isHide: true,
-    },
+    meta:{
+        isHide:true,
+    }
   },
   {
     path: "/search/:keyword?",
     component: Search,
     name: "search",
     props(route) {
-      return { keyword: route.params.keyword, keyword2: route.query.keyword };
+      return {
+        keyword: route.params.keyword,
+        keyword2: route.query.keyword,
+      };
     },
   },
   {
