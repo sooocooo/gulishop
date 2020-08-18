@@ -3,6 +3,7 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 import home from "./home";
 import user from "./user";
+import search  from "./search"
 
 const state = {};
 const actions = {};
@@ -17,5 +18,6 @@ export default new Vuex.Store({
   modules: {
     home,
     user,
+    search,
   },
 });

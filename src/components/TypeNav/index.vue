@@ -1,8 +1,63 @@
 <template>
   <!-- 商品分类导航 -->
   <div class="type-nav">
-    <div class="container">
-      <h2 class="all">全部商品分类</h2>
+    <div class="container" @click="toSearch">
+      <div @mouseleave="moveOutDiv" @mouseenter="moveInDiv">
+        <h2 class="all">全部商品分类</h2>
+        <transition name="show">
+          <div class="sort" v-show="isShow">
+            <div class="all-sort-list2">
+              <div
+                class="item"
+                @mouseenter="moveIn(index)"
+                :class="{item_on:currentIndex === index}"
+                v-for="(c1,index) in categoryList"
+                :key="c1.categoryId"
+              >
+                <h3>
+                  <a
+                    href="javascript:;"
+                    :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId"
+                  >{{c1.categoryName}}</a>
+                </h3>
+                <div class="item-list clearfix">
+                  <div class="subitem">
+                    <dl class="fore" v-for="(c2) in c1.categoryChild" :key="c2.categoryId">
+                      <dt>
+                        <a
+                          href="javascript:;"
+                          :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId"
+                        >{{c2.categoryName}}</a>
+                      </dt>
+                      <dd>
+                        <em v-for="(c3) in c2.categoryChild" :key="c3.categoryId">
+                          <a
+                            href="javascript:;"
+                            :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId"
+                          >{{c3.categoryName}}</a>
+                        </em>
+                        <em>
+                          <a href>文学</a>
+                        </em>
+                        <em>
+                          <a href>经管</a>
+                        </em>
+                        <em>
+                          <a href>畅读VIP</a>
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+      </div>
+
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -13,59 +68,81 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item" v-for="(c1, index) in categoryList" :key="c1.categoryId">
-            <h3>
-              <a href>{{c1.categoryName}}</a>
-            </h3>
-            <div class="item-list clearfix">
-              <div class="subitem">
-                <dl class="fore" v-for="(c2, index) in c1.categoryChild" :key="c2.categoryId">
-                  <dt>
-                    <a href>{{c2.categoryName}}</a>
-                  </dt>
-                  <dd>
-                    <em v-for="(c3, index) in c2.categoryChild" :key="c3.categoryId">
-                      <a href>{{c3.categoryName}}</a>
-                    </em>
-                    <em>
-                      <a href>文学</a>
-                    </em>
-                    <em>
-                      <a href>经管</a>
-                    </em>
-                    <em>
-                      <a href>畅读VIP</a>
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import throttle from "lodash/throttle";
 export default {
   name: "TypeNav",
+  data() {
+    return {
+      currentIndex: -1,
+      isShow: true,
+    };
+  },
   mounted() {
-    // this.$store.dispatch('getCategoryList')
-    this.getCategoryList();
+    if (this.$route.path !== "/home") {
+      this.isShow = false;
+    }
   },
   methods: {
-    getCategoryList() {
-      this.$store.dispatch("getCategoryList");
+    // moveIn(index) {
+    //   this.currentIndex = index;
+    // },
+    moveIn: throttle(
+      function (index) {
+        // console.log(index);
+        this.currentIndex = index;
+      },
+      30,
+      { trailing: false }
+    ),
+    toSearch(event) {
+      let target = event.target;
+      let data = target.dataset;
+      console.log(data);
+      let { categoryname, category1id, category2id, category3id } = data;
+      if (categoryname) {
+        let location = {
+          name: "search",
+        };
+        let query = {
+          categoryName: categoryname,
+        };
+
+        if (category1id) {
+          query.category1id = category1id;
+        } else if (category2id) {
+          query.category2id = category2id;
+        } else {
+          query.category3id = category3id;
+        }
+        location.query = query;
+        //点击类别的时候带的是query参数,我们得去看看原来有没有params参数,有的话也得带上
+         if(this.$route.params){
+        location.params = this.$route.params
+      }
+        this.$router.push(location);
+      }
+    },
+    moveInDiv() {
+      this.isShow = true;
+    },
+
+    moveOutDiv() {
+      this.currentIndex = -1;
+      if (this.$route.path !== "/home") {
+        this.isShow = false;
+      }
     },
   },
   computed: {
     ...mapState({
       categoryList: (state) => state.home.ctategoryList,
-    }),
+    }), //dispath 在home组件中
     // ...mapGetters(["categoryList1"]),
   },
 };
@@ -111,6 +188,17 @@ export default {
       position: absolute;
       background: #fafafa;
       z-index: 999;
+      &.show-enter {
+        opacity: 0;
+        height: 0;
+      }
+      &.show-enter-to {
+        opacity: 1;
+        height: 461px;
+      }
+      &.show-enter-active {
+        transition: all 0.5s;
+      }
 
       .all-sort-list2 {
         .item {
@@ -164,7 +252,7 @@ export default {
 
                 dd {
                   float: left;
-                  width: 415px;
+                  width: 666px;
                   padding: 3px 0 0;
                   overflow: hidden;
 
@@ -181,7 +269,8 @@ export default {
             }
           }
 
-          &:hover {
+          &.item_on {
+            background-color: skyblue;
             .item-list {
               display: block;
             }

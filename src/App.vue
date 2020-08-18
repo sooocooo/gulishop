@@ -16,6 +16,15 @@ export default {
     Hearder,
     Footer,
   },
+  mounted() {
+    // this.$store.dispatch('getCategoryList')
+    this.getCategoryList();
+  },
+  methods: {
+    getCategoryList() {
+      this.$store.dispatch("getCategoryList"); //mapstate在TypeNav中展示
+    },
+  }
 };
 </script>
 

@@ -61,11 +61,15 @@ export default {
         params: {
           keyword: this.keyword || undefined,
         },
-        query: {
-          keyword: this.keyword.toUpperCase(),
-        },
+        // query: {
+        //   keyword: this.keyword.toUpperCase(),
+        // },
       };
-
+      //点击搜索的时候应该去看看以前有没有query参数,(路由当中有没有)
+      if(this.$route.query){
+        location.query = this.$route.query
+      }
+     
       this.$router.push(location);
     },
   },
