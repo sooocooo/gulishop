@@ -26,6 +26,20 @@ export const reqGoodsListInfo = (searchParams) => {
     data: searchParams,
   });
 };
+export const reqGoodsDetailInfo = (skuId) => {
+  return Ajax({
+    url: `/item/${skuId}`,
+    method: "get",
+  });
+};
+export const reqAddOrUpdateCart =(skuId,skuNum)=>{  //传递的是商品名字和id
+  return Ajax({
+    url:`/cart/addToCart/${ skuId }/${ skuNum }`,
+    method:'post'
+  })
+} 
+export const reqShopCartList =() =>Ajax.get('/cart/cartList')
+// reqGoodsDetailInfo(112);
 // reqGoodsListInfo({});
 
 // reqCategoryList()

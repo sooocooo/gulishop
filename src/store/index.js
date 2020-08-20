@@ -4,7 +4,8 @@ Vue.use(Vuex);
 import home from "./home";
 import user from "./user";
 import search  from "./search"
-
+import detail  from "./detail"
+import shopcart  from  "./shopcart"
 const state = {};
 const actions = {};
 const mutations = {};
@@ -19,5 +20,7 @@ export default new Vuex.Store({
     home,
     user,
     search,
+    detail,
+    shopcart,
   },
 });

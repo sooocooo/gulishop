@@ -83,9 +83,12 @@
               <li class="yui3-u-1-5" v-for="(goods) in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank">
+                    <router-link :to="`/detail/${goods.id}`">
                       <img :src="goods.defaultImg" />
-                    </a>
+                    </router-link>
+                    <!-- <a href="item.html" target="_blank">
+                      <img :src="goods.defaultImg" />
+                    </a>-->
                   </div>
                   <div class="price">
                     <strong>
@@ -94,11 +97,12 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a
+                    <router-link :to="`/detail/${goods.id}`">{{goods.title}}</router-link>
+                    <!-- <a
                       target="_blank"
                       href="item.html"
                       title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
-                    >{{goods.title}}</a>
+                    >{{goods.title}}</a>-->
                   </div>
                   <div class="commit">
                     <i class="command">
@@ -118,12 +122,13 @@
               </li>
             </ul>
           </div>
-        <Pagination
-        :currentPageNum="searchParams.pageNo"
-        :total="goodsListInfo.tatal"
-        :pageSize="searchParams.pageSize"
-
-         />
+          <Pagination
+            :currentPageNum="searchParams.pageNo"
+            :total="goodsListInfo.total"
+            :pageSize="searchParams.pageSize"
+            :continueSize="5"
+            @changePageNum="changePageNum"
+          />
         </div>
       </div>
     </div>
@@ -132,7 +137,7 @@
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "Search",
@@ -146,7 +151,7 @@ export default {
         keyword: "",
         order: "1:desc", //1综合 降序desc  asc升序  2价格
         pageNo: 1,
-        pageSize: 5,
+        pageSize: 2,
         props: [],
         trademark: "",
       },
@@ -188,17 +193,21 @@ export default {
     },
     //删除面包屑当中的类名请求参数
     removeCategoryName() {
+      this.searchParams.pageNo = 1;
       this.searchParams.categoryName = "";
       this.$router.replace({ name: "search", params: this.$route.params });
     },
     //删除面包屑当中的关键字请求参数
     removeKeyword() {
+      this.searchParams.pageNo = 1;
+
       this.searchParams.keyword = "";
       this.$router.replace({ name: "search", query: this.$route.query });
     },
 
     //使用自定义事件组件通信（子向父），达到根据品牌搜索
     searchForTrademark(trademark) {
+      this.searchParams.pageNo = 1;
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
       this.getGoodsListInfo();
     },
@@ -208,6 +217,7 @@ export default {
         `${attr.attrId}:${attrValue}:${attr.attrName}`
       );
       if (num !== -1) return;
+      this.searchParams.pageNo = 1;
 
       this.searchParams.props.push(
         `${attr.attrId}:${attrValue}:${attr.attrName}`
@@ -223,11 +233,14 @@ export default {
     },
     //删除面包屑当中的品牌参数
     removeTrademark() {
+      this.searchParams.pageNo = 1;
       this.searchParams.trademark = "";
       this.getGoodsListInfo();
     },
     //删除某一个下标的属性值
+
     removeProp(index) {
+      this.searchParams.pageNo = 1;
       this.searchParams.props.splice(index, 1);
       this.getGoodsListInfo();
     },
@@ -247,9 +260,16 @@ export default {
       this.searchParams.order = newOrder;
       this.getGoodsListInfo();
     },
+    changePageNum(page) {
+      this.searchParams.pageNo = 1;
+      this.searchParams.pageNo = page;
+      this.getGoodsListInfo();
+    },
   },
   computed: {
-    
+    ...mapState({
+      goodsListInfo: (state) => state.search.goodsListInfo,
+    }),
     ...mapGetters(["goodsList"]),
     orderFlag() {
       return this.searchParams.order.split(":")[0];
