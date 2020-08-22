@@ -32,14 +32,90 @@ export const reqGoodsDetailInfo = (skuId) => {
     method: "get",
   });
 };
-export const reqAddOrUpdateCart =(skuId,skuNum)=>{  //传递的是商品名字和id
+export const reqAddOrUpdateCart = (skuId, skuNum) => {
+  //传递的是商品名字和id
   return Ajax({
-    url:`/cart/addToCart/${ skuId }/${ skuNum }`,
-    method:'post'
+    url: `/cart/addToCart/${skuId}/${skuNum}`,
+    method: "post",
+  });
+};
+//请求购物车列表数据
+// /api/cart/checkCart/{skuID}/{isChecked}  请求选中状态  get
+export const reqShopCartList = () => Ajax.get("/cart/cartList");
+
+export const reqUpdateIsCheck = (skuId, isChecked) => {
+  return Ajax({
+    url: `/cart/checkCart/${skuId}/${isChecked}`,
+    method: "get",
+  });
+};
+
+//删除购物车的数据   /api/cart/deleteCart/{skuId}  delete
+export const reqDeleteCart = (skuId) => {
+  return Ajax({
+    url: `/cart/deleteCart/${skuId}`,
+    method: "delete",
+  });
+};
+
+//请求注册 /api/user/passport/register   post    {mobile,password,code}
+
+export const reqRegister = (userInfo) => {
+  return Ajax({
+    url: `/user/passport/register`,
+    method: "post",
+    data: userInfo,
+  });
+};
+//请求登录   reqLogin  post   '/user/passport/login'
+
+export const reqLogin = (userInfo) => {
+  return Ajax({
+    url: "/user/passport/login",
+    method: "post",
+    data: userInfo,
+  });
+};
+//退出登录  /api/user/passport/logout
+
+export const reqLogout = () => {
+  return Ajax({
+    url: "/user/passport/logout",
+    method: "get",
+  });
+};
+
+//请求创建订单交易的数据  /api/order/auth/trade  get
+export const reqTradeInfo = () => {
+  return Ajax({
+    url: `/order/auth/trade`,
+    method: "get",
+  });
+};
+
+//请求 创建提交订单
+export const reqSubmitOrder = (tradeNo, tradeInfo) => {
+  return Ajax({
+    url: `order/auth/submitOrder?tradeNo=${tradeNo}`,
+    method: "post",
+    data: tradeInfo,
+  });
+};
+//获取支付页面的支付信息 get  /api/payment/weixin/createNative/{orderId}
+export const reqPayInfo = (orderId) => {
+  return Ajax({
+    url: `/payment/weixin/createNative/${orderId}`,
+    method: "get",
+  });
+}; 
+ //获取订单支付状态的信息    reqOrderStatus
+ ///api/payment/weixin/queryPayStatus/{orderId}   get
+export const reqOrderStatus =(orderId)=>{
+  return Ajax({
+    url:`/payment/weixin/queryPayStatus/${orderId}`,
+    method:'get'
   })
-} 
-export const reqShopCartList =() =>Ajax.get('/cart/cartList')
+}
 // reqGoodsDetailInfo(112);
 // reqGoodsListInfo({});
-
 // reqCategoryList()
