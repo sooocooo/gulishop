@@ -88,7 +88,14 @@ export default {
         try {
           await this.$store.dispatch("login", { mobile, password });
           alert(`登录成功！！！`);
-          this.$router.push("/");
+          let redirectPath = this.$route.query.redirect;
+          console.log(redirectPath);
+          if (redirectPath) {
+            this.$router.push(redirectPath);
+          } else {
+            this.$router.push("/");
+          }
+          // this.$router.push("/");
         } catch (error) {
           alert(erroe.message);
         }

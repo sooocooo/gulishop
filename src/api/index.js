@@ -107,15 +107,23 @@ export const reqPayInfo = (orderId) => {
     url: `/payment/weixin/createNative/${orderId}`,
     method: "get",
   });
-}; 
- //获取订单支付状态的信息    reqOrderStatus
- ///api/payment/weixin/queryPayStatus/{orderId}   get
-export const reqOrderStatus =(orderId)=>{
+};
+//获取订单支付状态的信息    reqOrderStatus
+///api/payment/weixin/queryPayStatus/{orderId}   get
+export const reqOrderStatus = (orderId) => {
   return Ajax({
-    url:`/payment/weixin/queryPayStatus/${orderId}`,
-    method:'get'
-  })
-}
+    url: `/payment/weixin/queryPayStatus/${orderId}`,
+    method: "get",
+  });
+};
+//请求获取我的订单分页列表   /order/auth/${page}/${limit}
+export const reqMyOrderInfo = (page, limit) => {
+  return Ajax({
+    url: `/order/auth/${page}/${limit}`,
+    method: "get",
+  });
+};
+
 // reqGoodsDetailInfo(112);
 // reqGoodsListInfo({});
 // reqCategoryList()

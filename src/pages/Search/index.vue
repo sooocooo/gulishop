@@ -12,22 +12,30 @@
           </ul>
           <ul class="fl sui-tag">
             <li class="with-x" v-show="searchParams.categoryName">
-              {{searchParams.categoryName}}
+              {{ searchParams.categoryName }}
               <i @click="removeCategoryName">×</i>
             </li>
             <li class="with-x" v-show="searchParams.keyword">
-              {{searchParams.keyword}}
+              {{ searchParams.keyword }}
               <i @click="removeKeyword">×</i>
             </li>
 
             <li class="with-x" v-show="searchParams.trademark">
-              {{(searchParams.trademark ? searchParams.trademark : '').split(':')[1]}}
+              {{
+                (searchParams.trademark ? searchParams.trademark : "").split(
+                  ":"
+                )[1]
+              }}
               <!-- {{searchParams.trademark.split(':')[1]}}  -->
               <i @click="removeTrademark">×</i>
             </li>
 
-            <li class="with-x" v-for="(prop, index) in searchParams.props" :key="index">
-              {{prop.split(':')[1]}}
+            <li
+              class="with-x"
+              v-for="(prop, index) in searchParams.props"
+              :key="index"
+            >
+              {{ prop.split(":")[1] }}
               <i @click="removeProp(index)">×</i>
             </li>
           </ul>
@@ -44,14 +52,18 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{active:searchParams.order.split(':')[0] ==='1'}">
+                <li
+                  :class="{ active: searchParams.order.split(':')[0] === '1' }"
+                >
                   <a href="javascript:;" @click="changeOrder('1')">
                     综合
                     <i
                       class="iconfont"
-                      :class="{icondown:searchParams.order.split(':')[1] ==='desc'
-                      ,iconup:searchParams.order.split(':')[1] ==='asc'}"
-                      v-if="searchParams.order.split(':')[0] ==='1'"
+                      :class="{
+                        icondown: searchParams.order.split(':')[1] === 'desc',
+                        iconup: searchParams.order.split(':')[1] === 'asc',
+                      }"
+                      v-if="searchParams.order.split(':')[0] === '1'"
                     ></i>
                   </a>
                 </li>
@@ -65,13 +77,18 @@
                 <li>
                   <a href="#">评价</a>
                 </li>
-                <li :class="{active:searchParams.order.split(':')[0] ==='2'}">
+                <li
+                  :class="{ active: searchParams.order.split(':')[0] === '2' }"
+                >
                   <a href="javescript:;" @click="changeOrder('2')">
                     价格
                     <i
                       class="iconfont"
-                      :class="{icondown:searchParams.order.split(':')[1] ==='desc',iconup:searchParams.order.split(':')[1] ==='asc'}"
-                      v-if="searchParams.order.split(':')[0] ==='2'"
+                      :class="{
+                        icondown: searchParams.order.split(':')[1] === 'desc',
+                        iconup: searchParams.order.split(':')[1] === 'asc',
+                      }"
+                      v-if="searchParams.order.split(':')[0] === '2'"
                     ></i>
                   </a>
                 </li>
@@ -80,11 +97,11 @@
           </div>
           <div class="goods-list">
             <ul class="yui3-g">
-              <li class="yui3-u-1-5" v-for="(goods) in goodsList" :key="goods.id">
+              <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
                     <router-link :to="`/detail/${goods.id}`">
-                      <img :src="goods.defaultImg" />
+                      <img v-lazy="goods.defaultImg" />
                     </router-link>
                     <!-- <a href="item.html" target="_blank">
                       <img :src="goods.defaultImg" />
@@ -93,11 +110,13 @@
                   <div class="price">
                     <strong>
                       <em>¥</em>
-                      <i>{{goods.price}}</i>
+                      <i>{{ goods.price }}</i>
                     </strong>
                   </div>
                   <div class="attr">
-                    <router-link :to="`/detail/${goods.id}`">{{goods.title}}</router-link>
+                    <router-link :to="`/detail/${goods.id}`">{{
+                      goods.title
+                    }}</router-link>
                     <!-- <a
                       target="_blank"
                       href="item.html"
@@ -115,8 +134,11 @@
                       href="success-cart.html"
                       target="_blank"
                       class="sui-btn btn-bordered btn-danger"
-                    >加入购物车</a>
-                    <a href="javascript:void(0);" class="sui-btn btn-bordered">收藏</a>
+                      >加入购物车</a
+                    >
+                    <a href="javascript:void(0);" class="sui-btn btn-bordered"
+                      >收藏</a
+                    >
                   </div>
                 </div>
               </li>
